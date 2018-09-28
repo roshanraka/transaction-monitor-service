@@ -1,4 +1,4 @@
-package com.dunya.stakechannel.kafka;
+package com.dunya.stakechannel.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,19 +12,22 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
-import com.dunya.stakechannel.utils.Constants;
-
 @EnableKafka
 @Configuration
 public class KafkaListenerConfig {
 	@Bean
-	public ConsumerFactory<String, String> consumerFactory() {
-		Map<String, Object> props = new HashMap<>();
+    public Map<String, Object> consumerConfigs() {
+        Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, Constants.KAFKA_BROKERS);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, Constants.GROUP_ID_CONFIG);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		return new DefaultKafkaConsumerFactory<>(props);
+        return props;
+    }
+	
+	@Bean
+	public ConsumerFactory<String, String> consumerFactory() {
+		return new DefaultKafkaConsumerFactory<>(consumerConfigs());
 	}
 
 	@Bean

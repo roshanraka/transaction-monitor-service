@@ -1,4 +1,4 @@
-package com.dunya.stakechannel.repositories;
+package com.dunya.stakechannel.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
