@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.dunya.stakechannel</groupId>
-	<artifactId>network-service</artifactId>
+	<artifactId>transaction-monitor-service</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>network-service</name>
-	<description>Network Service for Stake Channel</description>
+	<name>transaction-monitor-service</name>
+	<description>Transaction Monitor Service for Stake Channel</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -50,16 +50,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-        
-        <!-- <dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-		</dependency> -->
-		
-		<!-- <dependency>
-    		<groupId>com.fasterxml.jackson.core</groupId>
-    		<artifactId>jackson-databind</artifactId>
-		</dependency> -->
 	</dependencies>
 
 	<build>

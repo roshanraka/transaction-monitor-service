@@ -2,15 +2,29 @@ package com.dunya.stakechannel.model;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+@Document(collection="account_action")
 public class AccountAction {
 	@Id
-	public ObjectId _id; 
+	public ObjectId _id;
+	
+	@Indexed
+	@Field("account_name")
 	private String accountName;
+	
 	private String action;
+	
+	@Field("block_time")
 	private long blockTime;
+	
 	private Integer count;
+	
+	@Field("tx_id")
 	private String txId;
+	
 	
 	public ObjectId get_id() {
 		return _id;

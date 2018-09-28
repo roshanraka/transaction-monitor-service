@@ -1,7 +1,6 @@
 package com.dunya.stakechannel.kafka;
 
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class KafkaConsumerService {
 		Transaction transaction;
 		try {
 			transaction = objectMapper.readValue(message, Transaction.class);
-			this.makeAccountAction(transaction);
+			this.makeAccountActionPair(transaction);
 		} catch (IOException e) {
 			Utils.logger.error(e.getMessage());
 		}
@@ -54,34 +54,38 @@ public class KafkaConsumerService {
 		Transaction transaction;
 		try {
 			transaction = objectMapper.readValue(message, Transaction.class);
-			this.makeAccountAction(transaction);
+			this.makeAccountActionPair(transaction);
 		} catch (IOException e) {
 			Utils.logger.error(e.getMessage());
 		}
 		cdl2.countDown();
 	}
 	
-	public synchronized void makeAccountAction(Transaction transaction) {
-		HashMap<AbstractMap.SimpleImmutableEntry<String, String>, Integer> map = new HashMap<>();
-		for(Act act: transaction.getTrace().getAction_traces()[0].getAct()) {
-			AbstractMap.SimpleImmutableEntry<String, String> entry
-			  = new AbstractMap.SimpleImmutableEntry<>(act.getAccount(), act.getName());
-			map.merge(entry, 1, Integer::sum);
+	public synchronized void makeAccountActionPair(Transaction transaction) {
+		HashMap<Pair<String, String>, Integer> map = new HashMap<>();
+		
+		// counts unique account-action
+		for(Act act: transaction.getTrace().getActionTraces()[0].getAct()) {
+			Pair<String, String> pair = Pair.of(act.getAccount(), act.getName());
+			map.merge(pair, 1, Integer::sum);
 		}
 		
 		List<AccountAction> entites = new ArrayList<>();
-		Iterator<Map.Entry<AbstractMap.SimpleImmutableEntry<String, String>, Integer>> it = map.entrySet().iterator();
+		Iterator<Map.Entry<Pair<String, String>, Integer>> it = map.entrySet().iterator();
+		
 		while (it.hasNext()) {
-		    Map.Entry<AbstractMap.SimpleImmutableEntry<String, String>, Integer> pair = it.next();
+		    Map.Entry<Pair<String, String>, Integer> entity = it.next();
 		    AccountAction accountAction = new AccountAction();
 			accountAction.setTxId(transaction.getTrace().getId());
 			accountAction.setBlockTime(transaction.getBlockTime());
-		    accountAction.setAccountName(pair.getKey().getKey());
-		    accountAction.setAction(pair.getKey().getValue());
-		    accountAction.setCount(pair.getValue());
+		    accountAction.setAccountName(entity.getKey().getFirst());
+		    accountAction.setAction(entity.getKey().getSecond());
+		    accountAction.setCount(entity.getValue());
+		    
 		    entites.add(accountAction);
 		    Utils.logger.info(accountAction.toString());
 		}
+		// save to MongoDB
 		accountActionRepository.saveAll(entites);
 	}
 }

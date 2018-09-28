@@ -1,118 +1,108 @@
 package com.dunya.stakechannel.model;
-                
-public class Trace
-{
-    private String elapsed;
 
-    private String id;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    private ActionTrace[] action_traces;
+public class Trace {
+	private String elapsed;
 
-    private String scheduled;
+	private String id;
 
-    private Object failed_dtrx_trace;
+	private ActionTrace[] actionTraces;
 
-    private String block_time;
+	private String scheduled;
 
-    private String block_num;
+	private Object failedDtrxTrace;
 
-    private String net_usage;
+	private String blockTime;
 
-    private TraceReceipt receipt;
+	private String blockNum;
 
-    public String getElapsed ()
-    {
-        return elapsed;
-    }
+	private String netUsage;
 
-    public void setElapsed (String elapsed)
-    {
-        this.elapsed = elapsed;
-    }
+	private TraceReceipt receipt;
 
-    public String getId ()
-    {
-        return id;
-    }
+	public String getElapsed() {
+		return elapsed;
+	}
 
-    public void setId (String id)
-    {
-        this.id = id;
-    }
+	public void setElapsed(String elapsed) {
+		this.elapsed = elapsed;
+	}
 
-    public ActionTrace[] getAction_traces ()
-    {
-        return action_traces;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setAction_traces (ActionTrace[] action_traces)
-    {
-        this.action_traces = action_traces;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getScheduled ()
-    {
-        return scheduled;
-    }
+	public ActionTrace[] getActionTraces() {
+		return actionTraces;
+	}
 
-    public void setScheduled (String scheduled)
-    {
-        this.scheduled = scheduled;
-    }
+	@JsonProperty("action_traces")
+	public void setActionTraces(ActionTrace[] actionTraces) {
+		this.actionTraces = actionTraces;
+	}
 
-    public Object getFailed_dtrx_trace ()
-    {
-        return failed_dtrx_trace;
-    }
+	public String getScheduled() {
+		return scheduled;
+	}
 
-    public void setFailed_dtrx_trace (Object failed_dtrx_trace)
-    {
-        this.failed_dtrx_trace = failed_dtrx_trace;
-    }
+	public void setScheduled(String scheduled) {
+		this.scheduled = scheduled;
+	}
 
-    public String getBlock_time ()
-    {
-        return block_time;
-    }
+	public Object getFailedDtrxTrace() {
+		return failedDtrxTrace;
+	}
 
-    public void setBlock_time (String block_time)
-    {
-        this.block_time = block_time;
-    }
+	@JsonProperty("failed_dtrx_trace")
+	public void setFailedDtrxTrace(Object failedDtrxTrace) {
+		this.failedDtrxTrace = failedDtrxTrace;
+	}
 
-    public String getBlock_num ()
-    {
-        return block_num;
-    }
+	public String getBlockTime() {
+		return blockTime;
+	}
 
-    public void setBlock_num (String block_num)
-    {
-        this.block_num = block_num;
-    }
+	@JsonProperty("block_time")
+	public void setBlock_time(String blockTime) {
+		this.blockTime = blockTime;
+	}
 
-    public String getNet_usage ()
-    {
-        return net_usage;
-    }
+	public String getBlockNum() {
+		return blockNum;
+	}
 
-    public void setNet_usage (String net_usage)
-    {
-        this.net_usage = net_usage;
-    }
+	@JsonProperty("block_num")
+	public void setBlockNum(String blockNum) {
+		this.blockNum = blockNum;
+	}
 
-    public TraceReceipt getReceipt ()
-    {
-        return receipt;
-    }
+	public String getNetUsage() {
+		return netUsage;
+	}
 
-    public void setReceipt (TraceReceipt receipt)
-    {
-        this.receipt = receipt;
-    }
+	@JsonProperty("net_usage")
+	public void setNetUsage(String netUsage) {
+		this.netUsage = netUsage;
+	}
 
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [elapsed = "+elapsed+", id = "+id+", action_traces = "+action_traces+", scheduled = "+scheduled+", failed_dtrx_trace = "+failed_dtrx_trace+", block_time = "+block_time+", block_num = "+block_num+", net_usage = "+net_usage+", receipt = "+receipt+"]";
-    }
+	public TraceReceipt getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(TraceReceipt receipt) {
+		this.receipt = receipt;
+	}
+
+	@Override
+	public String toString() {
+		return "ClassPojo [elapsed = " + elapsed + ", id = " + id + ", action_traces = " + actionTraces
+				+ ", scheduled = " + scheduled + ", failed_dtrx_trace = " + failedDtrxTrace + ", block_time = "
+				+ blockTime + ", block_num = " + blockNum + ", net_usage = " + netUsage + ", receipt = " + receipt
+				+ "]";
+	}
 }
