@@ -2,8 +2,10 @@ package com.dunya.stakechannel.kafka;
 
 import java.io.IOException;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.dunya.stakechannel.model.AccountAction;
 import com.dunya.stakechannel.model.Act;
 import com.dunya.stakechannel.model.Transaction;
+import com.dunya.stakechannel.repositories.AccountActionRepository;
 import com.dunya.stakechannel.utils.Utils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +29,9 @@ public class KafkaConsumerService {
 	
 	@Autowired
     ObjectMapper objectMapper;
+	
+	@Autowired
+	AccountActionRepository accountActionRepository;
 	
 	@KafkaListener(topicPartitions = { @TopicPartition(topic = "transactions", partitions = { "0" }) })
 	public void consumeMessageFromPartition0(String message) {
@@ -63,6 +69,7 @@ public class KafkaConsumerService {
 			map.merge(entry, 1, Integer::sum);
 		}
 		
+		List<AccountAction> entites = new ArrayList<>();
 		Iterator<Map.Entry<AbstractMap.SimpleImmutableEntry<String, String>, Integer>> it = map.entrySet().iterator();
 		while (it.hasNext()) {
 		    Map.Entry<AbstractMap.SimpleImmutableEntry<String, String>, Integer> pair = it.next();
@@ -72,7 +79,9 @@ public class KafkaConsumerService {
 		    accountAction.setAccountName(pair.getKey().getKey());
 		    accountAction.setAction(pair.getKey().getValue());
 		    accountAction.setCount(pair.getValue());
+		    entites.add(accountAction);
 		    Utils.logger.info(accountAction.toString());
 		}
+		accountActionRepository.saveAll(entites);
 	}
 }

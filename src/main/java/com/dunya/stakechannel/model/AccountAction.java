@@ -1,12 +1,25 @@
 package com.dunya.stakechannel.model;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 public class AccountAction {
+	@Id
+	public ObjectId _id; 
 	private String accountName;
 	private String action;
 	private long blockTime;
 	private Integer count;
 	private String txId;
 	
+	public ObjectId get_id() {
+		return _id;
+	}
+
+	public void set_id(ObjectId _id) {
+		this._id = _id;
+	}
+
 	public String getAccountName() {
 		return accountName;
 	}
